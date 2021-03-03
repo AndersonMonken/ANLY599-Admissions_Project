@@ -35,8 +35,33 @@ df <- df %>%
 df <- df %>% 
   mutate(Gender = if_else(Gender =='1', 'Male',Gender))
 
+# make volunteer level clear
 
+df$VolunteerLevel = as.character(df$VolunteerLevel)
 
+# make "0" No Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='0', 'No Volunteering',VolunteerLevel))
+
+# make "1" Poor Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='1', 'Poor Volunteering',VolunteerLevel))
+
+# make "2" Limited Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='2', 'Limited Volunteering',VolunteerLevel))
+
+# make "3" Average Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='3', 'Average Volunteering',VolunteerLevel))
+
+# make "4" Good Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='4', 'Good Volunteering',VolunteerLevel))
+
+# make "5" Excellent Volunteering
+df <- df %>% 
+  mutate(VolunteerLevel = if_else(VolunteerLevel =='5', 'Excellent Volunteering',VolunteerLevel))
 
 # what to do about WritingScore = 1???
 
