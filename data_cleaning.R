@@ -15,3 +15,10 @@ df <- df %>% filter(Gender != -1)
 
 # remove rows with WorkExp > 10
 df <- df %>% filter(WorkExp <= 10)
+
+# make lower case virginia upper case
+df <- df %>% 
+  mutate(State = if_else(State =='virginia', 'Virginia',State))
+
+# what to do about WritingScore = 1???
+
