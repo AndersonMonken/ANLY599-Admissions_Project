@@ -20,5 +20,23 @@ df <- df %>% filter(WorkExp <= 10)
 df <- df %>% 
   mutate(State = if_else(State =='virginia', 'Virginia',State))
 
+# make lower case mississippi upper case
+df <- df %>% 
+  mutate(State = if_else(State =='mississippi', 'Mississippi',State))
+
+# make male and female in Gender col
+df$Gender = as.character(df$Gender)
+
+# female
+df <- df %>% 
+  mutate(Gender = if_else(Gender =='0', 'Female',Gender))
+
+# male
+df <- df %>% 
+  mutate(Gender = if_else(Gender =='1', 'Male',Gender))
+
+
+
+
 # what to do about WritingScore = 1???
 
