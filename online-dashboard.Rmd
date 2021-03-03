@@ -1,0 +1,51 @@
+---
+title: "Admission Statistics Analysis"
+author: "Anderson Monken and Douglas Neumann"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+library(plotly)
+library(tidyverse)
+
+source('./data_cleaning.R')
+```
+
+Background
+========================================================
+
+Row
+-------------------
+
+### GPA
+
+```{r, echo = FALSE}
+
+ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), alpha = 0.5) + theme_classic())
+
+```
+
+
+### State
+
+```{r, echo = FALSE}
+
+ggplotly(ggplot(data = df %>% group_by(State, Decision) %>% tally(), aes(x = State, y = n, color = Decision, fill = Decision)) + geom_col() + theme_classic())
+
+```
+
+State Effects
+========================================================
+
+GPA Effects
+========================================================
+
+Gender Effects
+========================================================
