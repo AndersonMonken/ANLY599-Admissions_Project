@@ -14,7 +14,12 @@ knitr::opts_chunk$set(echo = TRUE)
 library(flexdashboard)
 library(plotly)
 library(tidyverse)
-
+library(rpart)
+library(rattle)
+library(tree)
+library(visNetwork)
+library(randomForest)
+library(randomForestExplainer)
 source('./data_cleaning.R')
 ```
 
@@ -36,13 +41,18 @@ barplot(counts, main="Decision Distribution",
 ### GPA
 
 ```{r, echo = FALSE}
-
 ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), alpha = 0.5) + theme_classic())
+```
 
+### Work Experience
+
+```{r, echo = FALSE}
+ggplotly(ggplot(data = df, aes(x = WorkExp)) + geom_density(aes(fill = Decision), alpha = 0.5) + theme_classic())
 ```
 
 
-### State
+State Effects
+========================================================
 
 ```{r, echo = FALSE}
 
@@ -64,14 +74,39 @@ ggplot(data = state_plot_data,
 )
 ```
 
-State Effects
-========================================================
-
 GPA Effects
 ========================================================
 
 Gender Effects
 ========================================================
+
 ```{r, echo = FALSE}
 ggplotly(ggplot(data = df %>% group_by(Gender, Decision) %>% tally(), aes(x = Gender, y = n, color = Decision, fill = Decision)) + geom_col() + theme_classic())
+```
+
+
+Decision Tree
+=========================================================
+
+
+### Decision Tree
+
+```{r, echo = FALSE}
+tree_simple <- rpart(Decision ~ ., data=df, cp =0.000000005)
+#fancyRpartPlot(tree_simple)
+
+visTree(tree_simple, main = "Decision Tree")
+
+```
+
+### Random Forest
+
+```{r}
+
+
+
+forest <- randomForest(Decision ~ ., 
+                     data = df, 
+                     mtry = 3, 
+                     ntree = 500)
 ```
