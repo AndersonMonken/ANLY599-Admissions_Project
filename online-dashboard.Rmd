@@ -24,6 +24,15 @@ Background
 Row
 -------------------
 
+### Inititial Decision Bar Graph
+```{r}
+# Simple Horizontal Bar Plot with Added Labels
+counts <- table(df$Decision)
+barplot(counts, main="Decision Distribution",
+  xlab="Decision", col=c("Green","Red", "Blue"),
+  legend = rownames(counts))
+```
+
 ### GPA
 
 ```{r, echo = FALSE}
@@ -63,3 +72,6 @@ GPA Effects
 
 Gender Effects
 ========================================================
+```{r, echo = FALSE}
+ggplotly(ggplot(data = df %>% group_by(Gender, Decision) %>% tally(), aes(x = Gender, y = n, color = Decision, fill = Decision)) + geom_col() + theme_classic())
+```
