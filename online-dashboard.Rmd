@@ -18,8 +18,7 @@ library(rpart)
 library(rattle)
 library(tree)
 library(visNetwork)
-library(randomForest)
-library(randomForestExplainer)
+
 source('./data_cleaning.R')
 ```
 
@@ -74,8 +73,30 @@ ggplot(data = state_plot_data,
 )
 ```
 
-GPA Effects
+Score Effects
 ========================================================
+
+### Test Score
+
+```{r, echo = FALSE}
+ggplotly(
+  
+  ggplot(data = df, aes(x = TestScore)) + 
+    geom_density(aes(fill = Decision), alpha = 0.5) + 
+    theme_classic()
+)
+```
+
+### Writing Score
+
+```{r, echo = FALSE}
+ggplotly(
+  
+  ggplot(data = df, aes(x = WritingScore)) + 
+    geom_density(aes(fill = Decision), alpha = 0.5) + 
+    theme_classic()
+)
+```
 
 Gender Effects
 ========================================================
@@ -93,20 +114,8 @@ Decision Tree
 
 ```{r, echo = FALSE}
 tree_simple <- rpart(Decision ~ ., data=df, cp =0.000000005)
-#fancyRpartPlot(tree_simple)
+decision_tree_prez <- fancyRpartPlot(tree_simple, main = 'Decision Tree of Admissions\n\n', sub = NA)
 
 visTree(tree_simple, main = "Decision Tree")
 
-```
-
-### Random Forest
-
-```{r}
-
-
-
-forest <- randomForest(Decision ~ ., 
-                     data = df, 
-                     mtry = 3, 
-                     ntree = 500)
 ```
