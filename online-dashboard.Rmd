@@ -70,7 +70,7 @@ Column
 ```{r, echo = FALSE}
 ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), alpha = 0.5) + 
            scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
-           theme_classic())
+           theme_classic() + ggtitle("GPA Density Plot by Decision"))
 ```
 
 Column
@@ -81,7 +81,7 @@ Column
 ```{r, echo = FALSE}
 ggplotly(ggplot(data = df, aes(x = WorkExp)) + geom_density(aes(fill = Decision), alpha = 0.5) +
            scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
-           theme_classic())
+           theme_classic() + ggtitle("Work Experience Density Plot by Decision"))
 ```
 
 
@@ -124,7 +124,7 @@ renderPlotly({ggplotly(
   ggplot(data = df, aes(x = TestScore)) + 
     geom_density(aes(fill = Decision), alpha = 0.5) + 
     scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
-    theme_classic()
+    theme_classic() + ggtitle("Test Score Density Plot by Decision")
 )
 })
 ```
@@ -140,7 +140,7 @@ renderPlotly({ggplotly(
   ggplot(data = df, aes(x = WritingScore)) + 
     geom_density(aes(fill = Decision), alpha = 0.5) + 
     scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
-    theme_classic()
+    theme_classic() + ggtitle("Writing Score Density Plot by Decision")
 )
 })
 ```
