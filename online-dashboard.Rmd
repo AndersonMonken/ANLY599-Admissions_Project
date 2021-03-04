@@ -3,7 +3,7 @@ title: "Admission Statistics Analysis"
 author: "Anderson Monken and Douglas Neumann"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: rows
+    orientation: columns
     social: menu
     source_code: embed
 runtime: shiny
@@ -18,6 +18,7 @@ library(rpart)
 library(rattle)
 library(tree)
 library(visNetwork)
+library(sparkline)
 
 source('./data_cleaning.R')
 ```
@@ -25,8 +26,19 @@ source('./data_cleaning.R')
 Background
 ========================================================
 
-Row
--------------------
+Column
+-------------------------------------
+
+### Headline Stats
+
+<center>
+<h4> Acceptance Rate: <b>36%</b> </h4>
+<h4> Students admitted: <b>29</b> </h4>
+<h4> States Represented in Class: <b>4</b> </h4>
+<h4> Average GPA: <b>3.74</b> </h4>
+<h4> Average Test Score: <b>960</b> </h4>
+<h4> Female Representation: <b>45%</b> </h4>
+</center>
 
 ### Inititial Decision Bar Graph
 ```{r}
@@ -37,16 +49,26 @@ barplot(counts, main="Decision Distribution",
   legend = rownames(counts))
 ```
 
+
+Column
+-------------------------------------
+
 ### GPA
 
 ```{r, echo = FALSE}
-ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), alpha = 0.5) + theme_classic())
+ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), alpha = 0.5) + 
+           scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+           theme_classic())
 ```
+Column
+-------------------------------------
 
 ### Work Experience
 
 ```{r, echo = FALSE}
-ggplotly(ggplot(data = df, aes(x = WorkExp)) + geom_density(aes(fill = Decision), alpha = 0.5) + theme_classic())
+ggplotly(ggplot(data = df, aes(x = WorkExp)) + geom_density(aes(fill = Decision), alpha = 0.5) +
+           scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+           theme_classic())
 ```
 
 
@@ -64,7 +86,7 @@ ggplotly(
 ggplot(data = state_plot_data, 
        aes(x = State, y = n, color = Decision, fill = Decision)) + 
   geom_col() + 
-  #theme_classic() + 
+  theme_classic() + 
   coord_flip() + 
   scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
   scale_color_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
@@ -73,30 +95,46 @@ ggplot(data = state_plot_data,
 )
 ```
 
+
 Score Effects
 ========================================================
+
+
+Column
+-------------------------------------
 
 ### Test Score
 
 ```{r, echo = FALSE}
-ggplotly(
+renderPlotly({ggplotly(
   
   ggplot(data = df, aes(x = TestScore)) + 
     geom_density(aes(fill = Decision), alpha = 0.5) + 
+    scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
     theme_classic()
 )
+})
 ```
+
+Column
+-------------------------------------
 
 ### Writing Score
 
 ```{r, echo = FALSE}
-ggplotly(
+renderPlotly({ggplotly(
   
   ggplot(data = df, aes(x = WritingScore)) + 
     geom_density(aes(fill = Decision), alpha = 0.5) + 
+    scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
     theme_classic()
 )
+})
 ```
+
+
+
+
 
 Gender Effects
 ========================================================
@@ -114,7 +152,7 @@ Decision Tree
 
 ```{r, echo = FALSE}
 tree_simple <- rpart(Decision ~ ., data=df, cp =0.000000005)
-decision_tree_prez <- fancyRpartPlot(tree_simple, main = 'Decision Tree of Admissions\n\n', sub = NA)
+#decision_tree_prez <- fancyRpartPlot(tree_simple, main = 'Decision Tree of Admissions\n\n', sub = NA)
 
 visTree(tree_simple, main = "Decision Tree")
 
