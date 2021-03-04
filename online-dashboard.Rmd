@@ -41,12 +41,22 @@ Column
 </center>
 
 ### Inititial Decision Bar Graph
-```{r}
+
+```{r, echo = FALSE}
 # Simple Horizontal Bar Plot with Added Labels
-counts <- table(df$Decision)
-barplot(counts, main="Decision Distribution",
-  xlab="Decision", col=c("Green","Red", "Blue"),
-  legend = rownames(counts))
+
+ggplotly(
+ggplot(df %>% group_by(Decision) %>% tally(), 
+       aes(x = Decision, y = n, fill = Decision)) + 
+  geom_col(aes(text=sprintf("Count: %s<br>Decision: %s", n, Decision))) + 
+  ggtitle("Decision Distribution") + 
+  xlab("Decision") +
+  ylab("Count") +
+  scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+           theme_classic(),
+
+tooltip="text"
+)
 ```
 
 
@@ -60,6 +70,7 @@ ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), al
            scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
            theme_classic())
 ```
+
 Column
 -------------------------------------
 
