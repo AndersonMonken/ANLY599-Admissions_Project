@@ -37,8 +37,22 @@ ggplotly(ggplot(data = df, aes(x = GPA)) + geom_density(aes(fill = Decision), al
 
 ```{r, echo = FALSE}
 
-ggplotly(ggplot(data = df %>% group_by(State, Decision) %>% tally(), aes(x = State, y = n, color = Decision, fill = Decision)) + geom_col() + theme_classic())
+state_order <- df %>% group_by(State) %>% tally()%>% arrange(n) %>% pull(State)
 
+state_plot_data <- df %>% group_by(State, Decision) %>% tally() %>% mutate(Decision = factor(Decision, levels = c('Admit','Waitlist','Decline')), State = factor(State, state_order))
+
+ggplotly(
+  
+ggplot(data = state_plot_data, 
+       aes(x = State, y = n, color = Decision, fill = Decision)) + 
+  geom_col() + 
+  #theme_classic() + 
+  coord_flip() + 
+  scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+  scale_color_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+  ggtitle("Admission Decision by State")
+         
+)
 ```
 
 State Effects
