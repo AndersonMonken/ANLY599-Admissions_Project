@@ -21,6 +21,8 @@ library(visNetwork)
 library(sparkline)
 
 source('./data_cleaning.R')
+
+df <- df %>% mutate(Decision = factor(Decision, levels = c('Admit','Waitlist','Decline')))
 ```
 
 Background
@@ -151,7 +153,10 @@ Gender Effects
 ========================================================
 
 ```{r, echo = FALSE}
-ggplotly(ggplot(data = df %>% group_by(Gender, Decision) %>% tally(), aes(x = Gender, y = n, color = Decision, fill = Decision)) + geom_col() + theme_classic())
+ggplotly(ggplot(data = df %>% group_by(Gender, Decision) %>% tally(), aes(x = Gender, y = n, color = Decision, fill = Decision)) + geom_col() +
+           scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+                      scale_color_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+           theme_classic())
 ```
 
 
