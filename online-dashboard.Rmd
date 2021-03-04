@@ -160,6 +160,32 @@ ggplotly(ggplot(data = df %>% group_by(Gender, Decision) %>% tally(), aes(x = Ge
 ```
 
 
+Volunteer Effects
+========================================================
+
+### Volunteer plot
+
+```{r, echo = FALSE}
+
+VolunteerLevel_order <- df %>% group_by(VolunteerLevel) %>% tally()%>% arrange(n) %>% pull(VolunteerLevel)
+
+VolunteerLevel_plot_data <- df %>% group_by(VolunteerLevel, Decision) %>% tally() %>% mutate(Decision = factor(Decision, levels = c('Admit','Waitlist','Decline')), VolunteerLevel = factor(VolunteerLevel, VolunteerLevel_order))
+
+ggplotly(
+  
+ggplot(data = VolunteerLevel_plot_data, 
+       aes(x = VolunteerLevel, y = n, color = Decision, fill = Decision)) + 
+  geom_col() + 
+  theme_classic() + 
+  coord_flip() + 
+  scale_fill_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+  scale_color_manual(values = c('#F8766D','#619CFF','#00BA38'), breaks = c('Decline','Waitlist','Admit')) +
+  ggtitle("Admission Decision by Volunteer Level")
+         
+)
+```
+
+
 Decision Tree
 =========================================================
 
