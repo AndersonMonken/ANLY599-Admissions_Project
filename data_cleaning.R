@@ -51,4 +51,5 @@ df <- df %>%
                           )
   )
 
-
+# remove writing score less than 20
+df <- df %>% filter(WritingScore >=20)
